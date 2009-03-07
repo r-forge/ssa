@@ -1,0 +1,11 @@
+Package: ssa
+Version: 0.4
+Date: 2009-10-19
+Title: Singular Spectrum Analysis
+Author: Jan de Leeuw <deleeuw@stat.ucla.edu>
+Maintainer: Jan de Leeuw <deleeuw@stat.ucla.edu>
+Depends: methods, R (>= 2.8.0)
+Suggests: 
+Description: R functions for singular spectrum analysis
+URL: http://gifi.stat.ucla.edu
+License: GPL (>= 2)
