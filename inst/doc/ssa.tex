@@ -1,0 +1,445 @@
+\documentclass[11pt]{amsart}
+%
+\def\lu{}
+%\def\tx{}
+%\def\pa{}
+%\def\lm{}
+%
+\newif\iflu
+\ifx\lu\undefined
+\lufalse
+\else
+\lutrue
+\fi
+%
+\newif\iftx
+\ifx\tx\undefined
+\txfalse
+\else
+\txtrue
+\fi
+%
+\newif\ifpa
+\ifx\pa\undefined
+\pafalse
+\else
+\patrue
+\fi
+%
+\newif\iflm
+\ifx\lm\undefined
+\lmfalse
+\else
+\lmtrue
+\fi
+%
+\def\myfont{\textsc{Computer Modern}}
+\iflu
+\usepackage[T1]{fontenc}
+\usepackage[full]{textcomp} % to get the right copyright, etc.
+\usepackage[altbullet]{lucidabr}     % get larger bullet
+\DeclareEncodingSubset{TS1}{hlh}{1}  % including \oldstylenums
+\def\myfont{\textsc{Lucida Bright}}
+\fi
+%
+\ifpa
+\usepackage[T1]{fontenc}
+\usepackage[full]{textcomp} % to get the right copyright, etc.
+\usepackage{pxfonts}
+\def\myfont{\textsc{Palatino}}
+\fi
+%
+\iftx
+\usepackage[T1]{fontenc}
+\usepackage[full]{textcomp}
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet} 
+\usepackage{courier}
+\def\myfont{\textsc{Times Roman}}
+\fi
+%
+\iflm
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\def\myfont{\textsc{Latin Modern}}
+\fi
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+%
+\usepackage{ifpdf}
+\ifpdf
+\usepackage[pdftex]{color,graphicx,hyperref}
+\else
+\usepackage{color,graphicx,hyperref}
+\fi
+%
+\usepackage{amssymb,latexsym,amsxtra,upref}
+\usepackage{float,fancybox,fancyvrb,verbatim,listings,asymptote,epstopdf,subfigure,calc}
+\usepackage[square]{natbib}
+%
+%\usepackage[draft]{pdfdraftcopy}
+%\draftstring{FROM JAN'S DESK}
+%\definecolor{thisone}{rgb}{1,.7,.7}
+%\draftcolor{thisone}
+%
+\makeindex
+%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+%
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{assumption}{Assumption}[section]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+%\renewcommand{\theremark}{}
+\newtheorem{result}{Result}
+%\renewcommand{\theresult}{}
+%
+\newtheorem{example}{Example}[section]
+\newtheorem{counter}{Counterexample}[section]
+%
+\newcounter{hours}
+\newcounter{minutes}
+\newcommand{\defi}{\mathop{=}\limits^{\Delta}}      % mathop for define
+\newcommand{\argmin}[1]{\mathop{\mathbf{argmin}}\limits_{#1}}      % mathop for argmin
+\newcommand{\argmax}[1]{\mathop{\mathbf{argmax}}\limits_{#1}}      % mathop for argmin
+\newcommand{\ip}[2]{\langle{#1},{#2}\rangle}
+\newcommand{\matdim}[2]{\mathop{#1}\limits_{#2}}
+\newcommand{\inlaw}{\mathop{\Rightarrow}\limits^{\mathcal{L}}}
+\newcommand{\inprob}{\mathop{\Rightarrow}\limits^{\mathcal{P}}}
+\newcommand{\pardev}[2]{\mathop{\frac{\partial{#1}}{\partial{#2}}}}
+\newcommand\printtime{\setcounter{hours}{\time/60}%
+	\setcounter{minutes}{\time-\value{hours}*60}%
+	\thehours h \theminutes min}
+\newcommand{\indexkeywords}[1]{\index{#1@\textit{\textcolor{red}{#1}}}}%
+\newcommand{\doublesum}[1]{\mathop{\sum\sum}\limits_{#1}}
+
+\lstloadlanguages{R} 
+\lstdefinelanguage{RPlus}[]{R}{% 
+morekeywords={acf,ar,arima,arima.sim,colMeans,colSums,is.na,is.null,%     
+mapply,ms,na.rm,nlmin,replicate,row.names,rowMeans,rowSums,seasonal,%     
+sys.time,system.time,ts.plot,which.max,which.min},%  
+deletekeywords={c},%
+alsoletter={.\%},% 
+alsoother={:_\$}} 
+\lstset{language=RPlus,%
+extendedchars=true,%
+basicstyle=\small\ttfamily,%
+stringstyle=\color{magenta},%
+showstringspaces=false,%
+xleftmargin=4ex,%
+numbers=left,%
+numberstyle=\tiny,%
+stepnumber=1,%
+firstnumber=1,%
+breaklines=true,%
+keywordstyle=\color{red}\mdseries\underbar,%
+commentstyle=\color{green}\textsl,%
+index=[1][keywords],%
+indexstyle=[1]\indexkeywords%
+}
+%
+\parskip = 0.1in
+\parindent = 0.0in
+%
+\renewcommand{\baselinestretch}{1.25}
+
+\begin{document}
+\title{Singular Spectrum Analysis in R}
+\author{Jan de Leeuw}
+\address{Department of Statistics\\ University of California\\ Los Angeles, CA 90095-1554}
+\email[Jan de Leeuw]{deleeuw@stat.ucla.edu}
+\urladdr[Jan de Leeuw]{http://gifi.stat.ucla.edu}
+%\thanks{}
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+\date{\today\ ---\ \printtime\ --- \ Typeset in\ \myfont}
+\keywords{Time Series, Singular Value Decomposition, Singular Spectrum Analysis}
+\subjclass[2000]{62M10} % see http://www.ams.org/msc
+\begin{abstract}
+Meet the abstract. This is the abstract.
+\end{abstract}
+\maketitle
+%\tableofcontents
+%\listoftables
+%\listoffigures
+\section{Introduction}
+Singular Spectrum Analysis (SSA from now on) decomposes an observed time series into a sum of component series, in which the components hopefully capture and show the dynamics of the series more clearly. The SSA decomposition method can be thought of as one possible generalization of the singular value decomposition (SVD), or of principal component analysis (PCA), to a single time series. It can display and isolate trends and seasonal effects, as well as stationary residuals. 
+
+SSA originated and has mostly been studied and applied in geophysics and atmospheric science. A comprehensive early review paper is~\citet{ghil_et_al_02}. The technique is not very well known is statistics, despite the publication some time ago of the book by \citet{golyandina_nekrutkin_zhigljavsky_01}. Recent examples, perhaps showing an increasing interest, are the review paper by~\citet{hassani_07}, and the application published by~\citet{bilancia_stea_08}.
+
+\section{PCA of Stationary Series}
+Suppose \(\underline{x}\) is a \(T\)-dimensional vector random variable with \(\mathbf{E}(\underline{x}\underline{x}')=\Omega\).
+The cross product matrix \(\Omega\), which we assume to be positive definite,  has spectral decomposition \(\Omega=Q\Lambda^2 Q'\). Define
+\(
+\underline{z}=\Lambda^{-1}Q'\underline{x}
+\).
+Then \(\mathbf{E}(\underline{z}\underline{z}')=\Lambda^{-1}Q'\Omega Q\Lambda^{-1}=I\). Also \(\underline{x}=Q\Lambda\underline{z}\), 
+the \emph{Karhunen-Lo\`eve Decomposition} of \(\underline{x}\).
+
+In the usual time series analysis we only observe a single \(T\)-dimensional realization \(x\) of \(\underline{x}\), and we have no idea what \(\Omega\) is. If we assume
+\(\underline{x}\) is stationary, however, we can estimate \(\omega_{st}\) with \(s\geq t\) by the average of the \(T-(s-t)\) products \(x_ux_v\) for which \(u-v=s-t\). Thus
+\[
+\hat\omega_{st}=\frac{1}{T-(s-t)}\sum_{v=1}^{T-(s-t)} x_vx_{v+(s-t)}.
+\]
+Now compute \(\hat\Omega=\hat Q\hat\Lambda^2\hat Q'\) and \(\hat z=\hat\Lambda^{-1}\hat Q'x\). Again \(x=\hat Q\hat\Lambda\hat z\). The columns of
+\(\hat Q\) are \emph{Empirical Orthogonal Functions} or EOF's. 
+
+More specific assumptions about the nature of the stationary process may lead to
+more precise estimates of \(\Omega\), provided of course these assumptions are more or less true. For instance, we might assume that \(\underline{x}\) is
+\(\mathbf{AR}(1)\), in which case \(\Omega\) only depends on the variance \(\sigma^2\) and the autocorrelation \(\rho\).
+
+\begin{lstlisting}
+dg<-function(s) {
+    n<-nrow(s); nn<-1:n; r<-rep(0,n)
+    for (k in 0:(n-1))
+         r[k+1]<-mean(s[which(outer(nn,k+nn,"=="))])
+    return(toeplitz(r))
+}
+\end{lstlisting}
+
+
+\section{The Four-Step Program}
+\subsection{Embedding}
+Suppose \(\{x_1,x_2,\cdots,x_T\}\) is our observed time series. For now, we assume there are no gaps (missing data). Choose a \emph{window width} \(2\leq L\leq\lfloor\frac12 T\rfloor\). Define \(K=T-L+1\), so that \(K=\lceil\frac12 T\rceil+1\geq L+1\). Define the \(K\times L\) matrix \(Z\) with row \(i\) equal to \(\{x_i,x_{i+1},\cdots,x_{i+L-1}\}\). Thus \(z_{ij}=x_{i+j-1}\), which implies that \(Z\) is a \href{http://en.wikipedia.org/wiki/Hankel_matrix}{\emph{Hankel matrix}}. \(Z\) is constant along its skew-diagonals, if \(i+j=k+\ell\) then \(z_{ij}=z_{k\ell}\).
+\subsection{Decomposition}
+The \href{http://en.wikipedia.org/wiki/Singular_value_decomposition}{singular value decomposition} or SVD of \(Z\) is \(Z=U\Lambda V'\). Here \(U\)
+is a \(K\times L\) orthonormal matrix, \(V\) is \(L\times L\) square orthonormal, and \(\Lambda\) is a diagonal matrix of order \(L\). We suppose, for identification purposes, that the diagonal elements of \(\Lambda\) are non-negative and are in non-increasing order along the diagonal. The SVD
+can also be written as
+\[
+Z=\sum_{s=1}^L Z_s=\sum_{s=1}^L \lambda_s^{}u_s^{}v_s'.
+\]
+Each of the \(Z_s\) is a rank-one matrix, and the \(Z_s\) are orthogonal in the sense that both \(Z_s^{}Z_t'=0\) and \(Z_s'Z_t^{}=0\) for \(s\not= t\).
+Also, for the sum of squares, a.k.a. the squared \href{http://en.wikipedia.org/wiki/Frobenius_norm#Frobenius_norm}{\emph{Frobenius norm}},
+\[
+\mathbf{SSQ}(Z)=\sum_{s=1}^L\mathbf{SSQ}(Z_s)=\sum_{s=1}^L\lambda_s^2,
+\]
+If we define
+\[
+\pi_t\defi\frac{\lambda_t^2}{\sum_{s=1}^L\lambda_s^2}
+\]
+then the \(\pi_t\) add up to one, and can be interpreted as the percentage of the sum of squares ``explained'' by \(Z_t\), i.e. by the
+singular triple \((\lambda_t,u_t,v_t)\).
+\subsection{Grouping}
+
+Suppose \(\mathcal{I}=\{I_1,\cdots,I_\Xi\}\) is a \href{http://en.wikipedia.org/wiki/Partition_of_a_set}{\emph{partition}} of \(\{1,2,\cdots,L\}\), and define
+\(\overline{Z}_\xi=\sum_{s\in I_\xi} Z_s\). Obviously we still have \(Z=\sum_{\xi=1}^\Xi\overline{Z}_\xi\). Moreover \(Z_\xi^{}Z_\mu'=0\) and \(Z_\xi'Z_\mu^{}=0\) for
+\(\xi\not=\mu\), and
+\[
+\mathbf{SSQ}(Z)=\sum_{\xi=i}^\Xi\mathbf{SSQ}(\overline{Z}_\xi)=\sum_{\xi=1}^\Xi\left\{\sum_{s\in I_\xi}\lambda_s^2\right\}.
+\]
+\subsection{Hankelization}
+Suppose we have a partition \(\mathcal{I}\) into \(\Xi\) sets, and corresponding \(\overline{Z}_\xi\). Find the Hankel matrices \(\tilde Z_\xi\) that
+minimize \(\mathbf{SSQ}(Z-\overline{Z}_\xi)\). They can be computed simply by \emph{Hankelizing} or \emph{diagonal averaging}, i.e. by replacing all elements
+for which \(i+j\) is constant by their average. At the same time this define a time series \(\tilde x_\xi\), with element \(k\) equal to the elements of
+\(\tilde Z_\xi\) for which \(i+j=k-1\). Since Hankelizing is a linear operation, and since \(Z\) is Hankel already, we have
+\[
+Z=\sum_{\xi=1}^\Xi\tilde Z_\xi,
+\]
+as well as
+\[
+x=\sum_{\xi=1}^\Xi\tilde x_\xi.
+\]
+This is the SSA decomposition of \(x\), or rather it is \emph{a} SSA decomposition, because it depends on the choice of the window width and the grouping of the singular triples.
+
+Note, by the way, that Hankelizing a matrix is an orthogonal projection, and thus
+\[
+\mathbf{SSQ}(Z)\geq\sum_{\xi=1}^\Xi\mathbf{SSQ}(\tilde Z_\xi),
+\]
+as well as
+\[
+\mathbf{SSQ}(x)\geq\sum_{\xi=1}^\Xi\mathbf{SSQ}(\tilde x_\xi).
+\]
+
+\section{Choices}
+\subsection{Window width}
+There are many sophisticated methods to choose window width. \citet[p. 18]{golyandina_nekrutkin_zhigljavsky_01} suggest determining the \href{http://en.wikipedia.org/wiki/Fractal_dimension}{\emph{fractal dimension}} of the series, or to find an approximate order using \href{http://en.wikipedia.org/wiki/Autoregressive_moving_average_model}{\emph{autoregression}}. In our code we use \(L=\lfloor\frac12 T\rfloor\) as the default, and generally that seems to work rather well. 
+\subsection{Grouping}
+We have chosen a simple grouping method based on \emph{w-correlations} defined in~\citet[p. 46--47]{golyandina_nekrutkin_zhigljavsky_01}. These are just cosines between time series, using a weighted inner product that de-emphasizes the beginning and end of the series. 
+
+We
+first use the trivial grouping in which each singular triple defines a group. Compute the \(L\times L\) matrix \(R\) of w-correlations, and choose a cut-off quantity \(0<\epsilon<1\). the \href{http://en.wikipedia.org/wiki/Modified_adjacency_matrix}{adjacency matrix} \(A\) defined by
+\[
+a_{j\ell}=\begin{cases}1&\text{ if }|r_{j\ell}|>\epsilon,\\
+0&\text{ otherwise}.
+\end{cases}
+\]
+We then use \href{http://en.wikipedia.org/wiki/Floyd-Warshall_algorithm}{\emph{Warshall's Algorithm}}~\citep{warshall_62} to compute the \href{http://en.wikipedia.org/wiki/Transitive_closure}{\emph{transitive closure}} of the relation corresponding with \(A\), and we use the \href{http://en.wikipedia.org/wiki/Equivalence_class}{\emph{equivalence classes}} of this relation to define the groups.
+
+In principle any clustering method can be used here. In~\citet{bilancia_stea_08}, for example, complete linkage hierarchical clustering is used. Given the almost infinite number of cluster methods that are available there is a great deal of flexibility here~\citep{gan_ma_wu_07} . Even if we limit ourselves to cluster methods available in \texttt{R}, we have many different choices. Also note that there are many clustering methods that do not require pairwise similarity
+measures first, and work directly on the data matrix.
+\section{Examples}
+\subsection{Nile}
+Data are from the package \texttt{datasets} in base \texttt{R}. The series, of length 100, is the annual flow of the river Nile at Ashwan 1871--1970. A timeplot is given in Figure~\ref{F:NileRaw}.
+\begin{center}
+        \fbox{\emph{Insert Figure~\ref{F:NileRaw} about here}}
+\end{center}
+For the SSA we use window width 50 and cut-off \(0.25\). The first singular triple explains 97.4\% and the next two 0.32\% and 0.22\%. The grouping
+gives the six groups \(\{\{1\},\{2\},\{\cdots\text{rest}\cdots\},\{32,33\},\{36,37\},\{48,49\}\}\).
+\begin{center}
+        \fbox{\emph{Insert Figure~\ref{F:Nile50} about here}}
+\end{center}
+
+\subsection{Accidental Deaths}
+Data are from package \texttt{MASS} and give monthly totals of accidental deaths in the USA from 1973--1978. The series has length 72, and is plotted in Figure~\ref{F:accRaw}.
+\begin{center}
+        \fbox{\emph{Insert Figure~\ref{F:accRaw} about here}}
+\end{center}
+For the SSA we use window width 36 and cut-off \(0.25\). The first singular triple explains 99.01\% and the next two 0.68\% and 0.12\%. The grouping
+gives the ten groups 
+\begin{multline*}
+\{\{1\},\{2,3\},\{4,5\},\{6\},\{7,8\},\{9,10\},\\\{11,\cdots,18\},\{\cdots\text{rest}\cdots\},\{31\},\{35,36\}\}.
+\end{multline*}
+\begin{center}
+        \fbox{\emph{Insert Figure~\ref{F:accdeaths} about here}}
+\end{center}
+%
+\subsection{Milk}
+The data from package \texttt{TSA} give the average monthly milk production per cow in the US from 1994 to 2005. The series has length 144, and is plotted in Figure~\ref{F:milkRaw}.
+\begin{center}
+        \fbox{\emph{Insert Figure~\ref{F:milkRaw} about here}}
+\end{center}
+SSA with the default settings gives 10 components. The first component explains 99.85\% of the total sum of squares. The groups are
+\begin{multline*}
+\{\{1\},\{2,3\},\{4,5\},\{6\},\{7,8\},\{\cdots\text{rest}\cdots\},\\
+\{12,13\},\{34,35\},\{44,\cdots,70\},\{71,72\}\}.
+\end{multline*}
+The 10 components are plotted in Figure~\ref{F:milk}.
+\begin{center}
+        \fbox{\emph{Insert Figure~\ref{F:milk} about here}}
+\end{center}
+%
+\subsection{Beer Sales}
+Data from package \texttt{TSA}. Monthly beer sales in millions of barrels from 1975 to 1990. The series has length 192, and is plotted in Figure~\ref{F:beerRaw}.
+\begin{center}
+        \fbox{\emph{Insert Figure~\ref{F:beerRaw} about here}}
+\end{center}
+\begin{center}
+        \fbox{\emph{Insert Figure~\ref{F:beersales} about here}}
+\end{center}
+\subsection{$\mathbf{CO_2}$}
+Data from package \texttt{datasets}. Mauna Loa Atmospheric \(CO_2\) Concentration, monthly  1959--1997. The series has length 468, and is plotted
+in Figure~\ref{F:co2Raw}. 
+\begin{center}
+        \fbox{\emph{Insert Figure~\ref{F:co2Raw} about here}}
+\end{center}
+Window width is 234, and the algorithm with cut-off 0.25 gives 12 groups. The first eigenvalue explains 99.9955\% of the total sum of squares. 
+\section{Variations}
+\subsection{To Center or Not to Center}
+\subsection{From Hankel to Toeplitz}
+Expanding the time series to a Hankel matrix, and decomposing this matrix into a sum of Hankel matrices, takes up a large amount of space. 
+We can avoid all this, by working with the matrix \(C=Z'Z\) and its eigen-decomposition \(C=V\Lambda^2 V'\). Now \(Z_s=Zv_sv_s'\),
+which becomes in elementwise notation
+\[
+(Z_s)_{ik}=\sum_{j=1}^L z_{ij}v_{js}v_{ks}=\sum_{j=1}^L x_{i+j-1}v_{js}v_{ks}
+\]
+Hankelizing means setting
+\[
+(x_s)_\nu=\frac{1}{n_\nu}\sum\{(Z_s)_{ik}\mid i+k=\nu+1\}
+\]
+Suppose \((i,k)\) are the \(n_\nu\) index pairs for which \(1\leq i\leq K\) and \(1\leq k\leq L\) and \(i+k=\nu+1\). This means that
+\(\max(1,(\nu+1)-L)\leq i\leq\min(\nu,K)\) and \(k=(\nu+1)-i\). Thus
+\[
+(x_s)_\nu=\frac{1}{n_\nu}\sum_{i=\max(1,(\nu+1)-L)}^{\min(\nu,K)}\ \ \sum_{j=1}^L x_{i+j-1}v_{js}v_{(\nu+1)-i,s}
+\]
+The expression only involves the eigenvectors of \(C\) and the values of the original series. No \emph{Embedding} and no
+\(Hankelizing\) is required.
+\subsection{Effect of Window Width}
+\section{Extensions}
+\subsection{Gaps}
+\subsection{Multivariate Series}
+\bibliographystyle{plainnat}
+\bibliography{jans}
+\newpage\appendix
+\section{Code}
+\subsection{\texttt{R} Code}\quad
+\lstinputlisting[basicstyle=\tiny\ttfamily]{../code/ssa.R}
+\subsection{\texttt{C} Code}\quad
+\lstinputlisting[basicstyle=\tiny\ttfamily,language=C]{../code/ssa.c}
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Nile Data]{\label{F:NileRaw}\includegraphics[scale=.40]{../examples/NileRaw.pdf}}
+\subfigure[Nile Data, window width 50, Cut-off 0.25]{\label{F:Nile50}\includegraphics[scale=.60]{../examples/Nile50.pdf}}
+\caption{Nile Data}\label{F:Nile}
+\end{figure}
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Accidental Deaths Data]{\label{F:accRaw}\includegraphics[scale=.40]{../examples/accRaw.pdf}}
+\subfigure[Accidental Deaths Data, window width 36, Cut-off 0.25]{\label{F:accdeaths}\includegraphics[scale=.60]{../examples/accdeaths.pdf}}
+\caption{Accidental Deaths}\label{F:accD}
+\end{figure}
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Milk Yield Data]{\label{F:milkRaw}\includegraphics[scale=.40]{../examples/milkRaw.pdf}}
+\subfigure[Milk Yield Data, window width 72, Cut-off 0.25]{\label{F:milk}\includegraphics[scale=.60]{../examples/milk.pdf}}
+\caption{Milk Yields}\label{F:milkD}
+\end{figure}
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Beer Sales Data]{\label{F:beerRaw}\includegraphics[scale=.40]{../examples/beerRaw.pdf}}
+\subfigure[Beer Sales SSA, window width 96, Cut-off 0.25]{\label{F:beersales}\includegraphics[scale=.60]{../examples/beersales.pdf}}
+\caption{Beer Sales}\label{F:beerD}
+\end{figure}
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale=.60]{../examples/co2Raw.pdf}
+\caption{Mauna Loa $CO_2$ Data}\label{F:co2Raw}
+\end{figure}
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Mauna Loa $CO_2$, \(L=234\), \(\epsilon=0.25\)]{\label{F:co2a}\includegraphics[scale=.55]{../examples/co2a.pdf}}
+\subfigure[Mauna Loa $CO_2$, \(L=234\), \(\epsilon=0.25\)]{\label{F:co2b}\includegraphics[scale=.55]{../examples/co2b.pdf}}
+\caption{Mauna Loa $CO_2$}\label{F:co2D}
+\end{figure}
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Mauna Loa $CO_2$ Centered, \(L=234\), \(\epsilon=0.25\)]{\label{F:co2Ca}\includegraphics[scale=.55]{../examples/co2Ca.pdf}}
+\subfigure[Mauna Loa $CO_2$ Centered, \(L=234\), \(\epsilon=0.25\)]{\label{F:co2Cb}\includegraphics[scale=.55]{../examples/co2Cb.pdf}}
+\caption{Mauna Loa $CO_2$ Centered}\label{F:co2C}
+\end{figure}
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale=.80]{../examples/beer48.pdf}
+\caption{Beer Sales, \(L=48\)}\label{F:beer48}
+\end{figure}
+\newpage
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Beer Sales \(\epsilon=0.40\), First Eight]{\label{F:beerepsa}\includegraphics[scale=.55]{../examples/beerepsa.pdf}}
+\subfigure[Beer Sales \(\epsilon=0.40\), Second Eight]{\label{F:beerepsb}\includegraphics[scale=.55]{../examples/beerepsb.pdf}}
+\caption{Beer Sales \(\epsilon=0.40\)}\label{F:beereps}
+\end{figure}
+\newpage
+
+%\printindex
+\end{document}
+
+
