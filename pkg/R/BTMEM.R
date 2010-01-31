@@ -1,5 +1,5 @@
 
-btpsd <- function(y, type="Tukey", win=N , taper=0.5) ) {
+btpsd <- function(y, type="Tukey", win=N , taper=0.5) {
 	## INPUT ##
 	## y = time series of interest
 	## win = window length = number of autocorrelations in estimation, DEFAULT = 2 * sqrt(lenth(y))
@@ -14,6 +14,7 @@ btpsd <- function(y, type="Tukey", win=N , taper=0.5) ) {
   if (type =="Tukey") { w <- tukey(win,taper) }
   if (type =="Hanning") { w <- hanning.window(win) }
   if (type =="Hamming") { w <- hamming.window(win) }
+  if (type =="Triangular") { w <- tri.window(win) }
 
 
 	r <- acf(y, lag.max = N-1,plot=FALSE)$acf;
@@ -59,6 +60,15 @@ hanning.window<-function(n)
     }
     return(c)
 }
+
+tri.window<-function(n)
+{
+	c <- c( 2/n*( n/2-abs( seq(0,n-1)-(n-1)/2 ) ) )
+
+	return(c)
+}
+
+
 
 hamming.window<-function(n) 
 {
