@@ -40,7 +40,9 @@
 # -- better algorithm for Toeplitz eigenvectors
 #
 
-dyn.load("ssa.so")
+.First.lib <- function(lib, pkg) {
+  library.dynam("ssa", pkg, lib)
+}
 
 ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=center,
         ndim=width,method="hankel",ssa_similarity=ssa_w_cor,ssa_cluster=ssa_trans,par=.25) {
