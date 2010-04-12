@@ -1,9 +1,9 @@
 Package: ssa
-Version: 0.4
-Date: 2009-10-19
+Version: 0.5
+Date: 2010-4-11
 Title: Singular Spectrum Analysis
-Author: Jan de Leeuw <deleeuw@stat.ucla.edu>
-Maintainer: Jan de Leeuw <deleeuw@stat.ucla.edu>
+Author: Jan de Leeuw <deleeuw@stat.ucla.edu>, Patrick Crutcher <pcrutcher@stat.ucla.edu>
+Maintainer: Patrick Crutcher <pcrutcher@stat.ucla.edu>,
 Depends: methods, R (>= 2.8.0), sapa (>= 1.0-2)
 Suggests: 
 Description: R functions for singular spectrum analysis
@@ -11,6 +11,8 @@ URL: http://gifi.stat.ucla.edu
 License: GPL (>= 2)
 Repository: R-Forge
 Repository/R-Forge/Project: ssa
-Repository/R-Forge/Revision: 5
-Date/Publication: 2009-03-07 04:46:29
-Packaged: 2009-08-03 21:34:10 UTC; rforge
+Repository/R-Forge/Revision: 21
+Date/Publication: 2010-02-03 01:26:11-03-07 04:46:29
+Repository: R-Forge
+Repository/R-Forge/Project: ssa
+Packaged: 2010-02-03 21:47:37 UTC; rforge
