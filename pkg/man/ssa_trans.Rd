@@ -3,7 +3,7 @@
 \title{  Equivalence classes for the transitive closure of a matrix}
 \description{
    Equivalence classes under the transitive closure}
-}
+
 \usage{
 ssa_trans(r, cut)
 }

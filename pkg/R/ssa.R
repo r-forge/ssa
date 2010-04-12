@@ -90,16 +90,6 @@ ssa_w_cor<-function(z,l,k) {
     return(c/sqrt(outer(d,d)))
 }
 
-ssa_hclust<-function(r,par) {
-
-	if (identical(r,"NULL")) {
-        r<-as.dist(1-abs(ssa_w_cor(a,L,K)))
-        }
-	s<-hclust( as.dist(r), method = par[1])
-	return(s)
-
-}
-
 ssa_trans<-function(r,cut) {
     s<-ifelse(abs(r)>cut,1,0)
     v<-warshall(s)
