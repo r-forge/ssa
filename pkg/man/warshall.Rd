@@ -1,32 +1,28 @@
 \name{warshall}
 \alias{warshall}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+\title{ Warshall's algorithm }
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+  Warshall's algorithm to compute the transitive closure for an adjacency matrix.
 }
 \usage{
 warshall(a)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{a}{ ~~Describe \code{a} here~~ }
+  \item{a}{ adjacency matrix }
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+
 }
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+ 
+  \item{a}{ transitive closure of the relation corresponding to a }
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
+\references{ S. Warshal, A Theorem on Boolean Matrices. Journal of the Association of Computer Machinery, 9:11-12,1962}
+\author{ Patrick Crutcher }
 \note{ ~~further notes~~ 
 
- ~Make other sections like Warning with \section{Warning }{....} ~
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
@@ -43,9 +39,5 @@ for (j in 1:n) {
         }
     }
 return(a)
-  }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{warshall}

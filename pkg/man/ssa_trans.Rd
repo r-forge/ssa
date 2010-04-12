@@ -1,33 +1,28 @@
 \name{ssa_trans}
 \alias{ssa_trans}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+\title{  Equivalence classes for the transitive closure of a matrix}
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+   Equivalence classes under the transitive closure}
 }
 \usage{
 ssa_trans(r, cut)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{r}{ ~~Describe \code{r} here~~ }
-  \item{cut}{ ~~Describe \code{cut} here~~ }
+  \item{r}{ an adjancency matrix}
+  \item{cut}{ threshold value }
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+
 }
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+
+  \item{ value }{equivalence classes used to define groups}
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
+\references{  }
+\author{ Patrick Crutcher }
 \note{ ~~further notes~~ 
 
- ~Make other sections like Warning with \section{Warning }{....} ~
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
@@ -45,5 +40,4 @@ function(r,cut) {
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ ts }

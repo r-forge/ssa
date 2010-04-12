@@ -44,10 +44,16 @@
   library.dynam("ssa", pkg, lib)
 }
 
-ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=center,
-        ndim=width,method="hankel",ssa_similarity=ssa_w_cor,ssa_cluster=ssa_trans,par=.25) {
+ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=c(),
+        ndim=width,method="hankel",ssa_similarity=ssa_w_cor,ssa_cluster=trans,par=.25,...) {
     if (!identical(class(data),"ts")) stop("Data should be of class ts")
-    data<-preproc(data); T<-length(data); K<-T-L+1
+    
+    if ( !identical(preproc,"NULL")) {   
+        data<-detrend(data,preproc,...);
+        }
+    
+    T<-length(data); K<-T-L+1
+    
     if (identical(method,"toeplitz")) {   
         cross<-toeplitz(rconv(data,1:L))
         s<-eigen(cross)$vectors
@@ -60,10 +66,18 @@ ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=center,
         s<-sincos(L)
         }
     a<-fromCross(data,s)
+    
     r<-ssa_similarity(a,L,K)
-    b<-ssa_cluster(r,par)
+    
+    if (identical(ssa_cluster,"trans")) {
+        b<-ssa_trans(a,r)
+        }
+    if (identical(ssa_cluster,"hierch")) {
+        b<-ssa_hclust(r,par)
+        }
+   # b<-ssa_cluster(r,par)
+    
     a<-sapply(b,function(kk) rowSums(as.matrix(a[,kk])))
-    r<-ssa_similarity(a,L,K)
     y<-ts(a,start=start(data),end=end(data),frequency=frequency(data))
     return(list(y=y,b=b,s=colSums(a^2),r=r))
 }
@@ -74,6 +88,16 @@ ssa_w_cor<-function(z,l,k) {
     w[1:ls]<-1:ls; w[(ks+1):n]<-n-(ks:(n-1))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     c<-crossprod(z,w*z); d<-diag(c)
     return(c/sqrt(outer(d,d)))
+}
+
+ssa_hclust<-function(r,par) {
+
+	if (identical(r,"NULL")) {
+        r<-as.dist(1-abs(ssa_w_cor(a,L,K)))
+        }
+	s<-hclust( as.dist(r), method = par[1])
+	return(s)
+
 }
 
 ssa_trans<-function(r,cut) {
@@ -105,10 +129,6 @@ sincos<-function(L) {
 return(apply(s,2,function(z) z/sqrt(sum(z^2))))
 }
 
-center<-function(x) x-mean(x)
-
-ident<-function(x) x
-
 rconv<-function(x,lag) {
 .C("cconv",
     as.integer(lag),
@@ -138,6 +158,11 @@ fromCross<-function(x,s) {
             as.integer(L),
             as.integer(T))
     return(matrix(al[[3]],T,L))
-}   
+}
 
 is.even<-function(x) return((as.integer(x) %% 2) == 0)
+
+center<-function(x) x-mean(x)
+
+ident<-function(x) x
+

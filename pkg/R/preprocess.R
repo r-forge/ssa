@@ -1,4 +1,4 @@
-preproc <- function(y,center=TRUE,detrend=FALSE,norm=TRUE, smoooth=FALSE,...){
+detrend <- function(y,center=TRUE,detrend=FALSE,norm=TRUE, smoooth=FALSE,...){
 
   # Description:
   #   Preprocessors for a time series

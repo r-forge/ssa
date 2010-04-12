@@ -1,40 +1,38 @@
 \name{ssa_w_cor}
-\alias{ssa_w_cor}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+ \alias{ssa_w_cor}
+
+\title{ w-correlation }
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+  Computes w - correlations (Golyandina, et.al. 2001) from a matrix
+  containing reconstructed components in its columns.
 }
 \usage{
 ssa_w_cor(z, l, k)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{z}{ ~~Describe \code{z} here~~ }
-  \item{l}{ ~~Describe \code{l} here~~ }
-  \item{k}{ ~~Describe \code{k} here~~ }
+  \item{z}{ A matrix containing reconstructed components in its columns. }
+  \item{l}{ An integer for the window width }
+  \item{k}{ An integer defined by k=t-l+1 }
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+  w-correlations can be used to assess how well reconstructed components can be separated from each other. 
+  See reference for more details.
 }
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+    A square matrix containing the w-correlations between components.
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
+\references{ Golyandina, N.; Nekrutkin, V. & Zhiglkilavskifi, A. Analysis of Time Series Structure: SSA and Related Techniques. CRC Press, 2001
+ }
+\author{ Patrick Crutcher }
 \note{ ~~further notes~~ 
-
- ~Make other sections like Warning with \section{Warning }{....} ~
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+
+#x <- sin(seq(0,10*pi,len=200))
+#x <- x + rnorm(x)/2
+#x.wc <- w.cor(x.rc,40)
+#image(x.wc,col=gray(100:0/100))
 
 ## The function is currently defined as
 function(z,l,k) {
@@ -47,5 +45,4 @@ function(z,l,k) {
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ ts }
