@@ -34,33 +34,6 @@ adp.mtm(y,bdw=0.05,order=10,normalize=TRUE,tape=c("dpss"))
 ##--	or do  help(data=index)  for the standard data sets.
 
 ## The function is currently defined as
-library(sapa)
-function(y,bdw=0.05,order=10,normalize=TRUE,tape=c("dpss")){
-  
-  ly <- length(y)
-  
-  if (missing(tape))
-    h<-taper(type="dpss",bandwidth=0.05,n.taper=8,n.sample=ly,normalize=TRUE)
-  else
-    h<-taper(type=tape,bandwidth=bdw,n.taper=order,n.sample=ly,normalize=TRUE)
 
-  hh<-as.matrix(h)
-    
-  Y<-hh*matrix(rep(y,order),dim(hh),byrow=TRUE)
-  I<-t(abs(mvfft(t(Y)))^2)/(2*pi)
-  
-  f.i<-apply(I[1:min(2,order),],2,mean)
-  i<-outer(1:ly,1:ly,"-")
-  
-  A<-ifelse(i==0,2*bdw,sin(2*pi*bdw*i)/(pi*i))
-  B<-matrix(rep(diag(hh%*%A%*%t(hh)),ly),order,ly)
-  frel <- f.i/mean(f.i)
-  frel <- matrix(rep(frel,order),order,ly,byrow=TRUE)
-  B<-B/(B+(1-B)/frel)^2
-  
-  f<-apply(B*I,2,sum)/apply(B,2,sum)
-  
-  return(list(f=f,B=B,I=I))
-}
 
 \keyword{ ts }
