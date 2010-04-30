@@ -44,7 +44,7 @@
   library.dynam("ssa", pkg, lib)
 }
 
-ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=c(),method="hankel",ssa_similarity=ssa_w_cor,ssa_cluster=trans,par=.25,...) {
+ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=c(),method="hankel",ssa_similarity=ssa_w_cor,ssa_cluster="trans",par=.25,...) {
     if (!identical(class(data),"ts")) stop("Data should be of class ts")
     
     if ( !identical(preproc,"NULL")) {   
@@ -71,9 +71,10 @@ ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=c(),method="ha
     if (identical(ssa_cluster,"trans")) {
         b<-ssa_trans(a,r)
         }
-    if (identical(ssa_cluster,"hierch")) {
-        b<-ssa_hclust(r,par)
-        }
+    # working on    
+    #if (identical(ssa_cluster,"hierch")) {
+     #   b<-ssa_hclust(r,par)
+     #   }
    # b<-ssa_cluster(r,par)
     
     a<-sapply(b,function(kk) rowSums(as.matrix(a[,kk])))
@@ -90,15 +91,14 @@ ssa_w_cor<-function(z,l,k) {
 }
 
 ### needs work ###
-ssa_hclust<-function(r,par,a,L,K) {
-
-	if (identical(r,"NULL")) {
-        r<-as.dist(1-abs(ssa_w_cor(a,L,K)))
-        }
-	s<-hclust( as.dist(r), method = par[1])
-	return(s)
-
-}
+#ssa_hclust<-function(r,par,a,L,K) {
+#
+#	if (identical(r,"NULL")) {
+#        r<-as.dist(1-abs(ssa_w_cor(a,L,K)))
+#        }
+#	s<-hclust( as.dist(r), method = par[1])
+#	return(s)
+#}
 
 ssa_trans<-function(r,cut) {
     s<-ifelse(abs(r)>cut,1,0)
