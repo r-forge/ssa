@@ -14,7 +14,7 @@ rconv(x, lag)
   \item{lag}{ ~~Describe \code{lag} here~~ }
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+  Calls C code in order to compute
 }
 \value{
   ~Describe the value returned
@@ -24,7 +24,7 @@ rconv(x, lag)
   ...
 }
 \references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
+\author{ Patrick Crutcher }
 \note{ ~~further notes~~ 
 
 }

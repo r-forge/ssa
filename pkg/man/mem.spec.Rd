@@ -1,29 +1,26 @@
 \name{mem.spec}
 \alias{mem.spec}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+\title{ Maximum-entropy spectral estimate }
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+  Computes the maximum-entropy spectral estimate
 }
-\usage{
+\usage{ mem.spec(y,ord=5,...)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{r}{ ~~Describe \code{r} here~~ }
-  \item{cut}{ ~~Describe \code{cut} here~~ }
+  \item{y}{ time series.}
+  \item{ord}{ maximum order of the AR series to be estimated for y. }
+  \item{...}{ Additional arguments passed to spec.ar}
+
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+  Uses spec.ar to compute the maximum-entropy estimate using Burg's method. See spec.ar
 }
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+  
+  \item{sp }{Description of 'comp1'}
 }
 \references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
+\author{ Patrick Crutcher }
 \note{ ~~further notes~~ 
 
 }
@@ -35,6 +32,15 @@
 
 ## The function is currently defined as
 
+  function(y, ord,... ) {
+	
+	y <- y - mean(y)
+	T <- length(y)
+	if ( ord >= T ) stop("The length of the window is longer than the data")
+
+	sp<-spec.ar(y, method="burg",aic=FALSE, order=ord,...)
+	return(sp)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

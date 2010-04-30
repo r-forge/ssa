@@ -44,8 +44,7 @@
   library.dynam("ssa", pkg, lib)
 }
 
-ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=c(),
-        ndim=width,method="hankel",ssa_similarity=ssa_w_cor,ssa_cluster=trans,par=.25,...) {
+ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=c(),method="hankel",ssa_similarity=ssa_w_cor,ssa_cluster=trans,par=.25,...) {
     if (!identical(class(data),"ts")) stop("Data should be of class ts")
     
     if ( !identical(preproc,"NULL")) {   
@@ -88,6 +87,17 @@ ssa_w_cor<-function(z,l,k) {
     w[1:ls]<-1:ls; w[(ks+1):n]<-n-(ks:(n-1))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     c<-crossprod(z,w*z); d<-diag(c)
     return(c/sqrt(outer(d,d)))
+}
+
+### needs work ###
+ssa_hclust<-function(r,par,a,L,K) {
+
+	if (identical(r,"NULL")) {
+        r<-as.dist(1-abs(ssa_w_cor(a,L,K)))
+        }
+	s<-hclust( as.dist(r), method = par[1])
+	return(s)
+
 }
 
 ssa_trans<-function(r,cut) {

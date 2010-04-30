@@ -13,17 +13,14 @@ hankel(x, L)
   \item{L}{ window length}
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+  Calls C code to compute the Hankel matrix
 }
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+
+  \item{value }{a matrix in Hankel form}
 }
 \references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
+\author{ Patrick Crutcher }
 \note{ ~~further notes~~ 
 
 }

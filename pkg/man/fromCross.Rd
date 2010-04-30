@@ -24,7 +24,7 @@ fromCross(x, s)
   ...
 }
 \references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
+\author{ Patrick Crutcher }
 \note{ ~~further notes~~ 
 
 }

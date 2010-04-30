@@ -25,7 +25,7 @@ btpsd <- function(y, type="Tukey", win=N , taper=0.5) {
 	return(est)
 }
 
-mem.spec <- function(y, ord,... ) {
+mem.spec <- function(y, ord=5,... ) {
 	## INPUT ##
 	## y = time series of interest
 	## order of AR series

@@ -1,17 +1,17 @@
-detrend <- function(y,center=TRUE,detrend=FALSE,norm=TRUE, smoooth=FALSE,...){
+detrend <- function(y,demean=TRUE,det=FALSE,norm=FALSE, smooth=FALSE,...){
 
   # Description:
   #   Preprocessors for a time series
   #
   # Usage:
   #
-  #   detrend(y,demean=TRUE,det=FALSE,smooth=FALSE,...)
+  #   detrend(y,demean=TRUE,det=FALSE,norm=FALSE,smooth=FALSE,...)
   #
   # Arguments:
   #
   #   y:      a vector containing a time series of data
   #
-  #   center: Logical.If TRUE, time series y will be centered. 
+  #   demean: Logical.If TRUE, time series y will be centered. 
   #
   #   det: 	  Logical.If TRUE, then time trend is removed by fitting a local weighted
   #           regression (loess) to the time series y
@@ -50,7 +50,7 @@ detrend <- function(y,center=TRUE,detrend=FALSE,norm=TRUE, smoooth=FALSE,...){
 		return(dt)
 	}
 
-	if(detrend==TRUE){
+	if(det==TRUE){
 		
 		x<- seq(1:length(y))
 		dt<- lm(y ~ x)$res
