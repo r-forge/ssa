@@ -38,25 +38,25 @@ detrend <- function(y,demean=TRUE,det=FALSE,norm=FALSE, smooth=FALSE,...){
 	
 
 
-	if(center==TRUE){
+	if(demean){
 		
 		dt<- y - mean(y)
 		return(dt)
 	}	
 	
-	if(norm==TRUE){
+	if(norm){
 		
 		dt<- (y - mean(y))/var(y)
 		return(dt)
 	}
 
-	if(det==TRUE){
+	if(det){
 		
 		x<- seq(1:length(y))
 		dt<- lm(y ~ x)$res
 		return(dt)
 		}
-	if(smooth==TRUE){
+	if(smooth){
 	
 		dt<- y-loess(y,...)$y
 		return(dt)
