@@ -76,8 +76,10 @@ ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=c(),method="ha
      #   b<-ssa_hclust(r,par)
      #   }
    # b<-ssa_cluster(r,par)
-    
+
     a<-sapply(b,function(kk) rowSums(as.matrix(a[,kk])))
+    r<-ssa_similarity(a,L,K)
+
     y<-ts(a,start=start(data),end=end(data),frequency=frequency(data))
     return(list(y=y,b=b,s=colSums(a^2),r=r))
 }
