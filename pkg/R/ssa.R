@@ -44,12 +44,12 @@
   library.dynam("ssa", pkg, lib)
 }
 
-ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),preproc=c(),method="hankel",ssa_similarity=ssa_w_cor,ssa_cluster="trans",par=.25,...) {
+ssa<-function(data,L=floor(length(data)/2),b=as.list(1:L),method="hankel",ssa_similarity=ssa_w_cor,ssa_cluster="trans",par=.25,...) {
     if (!identical(class(data),"ts")) stop("Data should be of class ts")
     
-    if ( !identical(preproc,"NULL")) {   
-        data<-detrend(data,preproc,...);
-        }
+    #if ( !identical(preproc,"NULL")) {   
+    #    data<-detrend(data,preproc,...);
+    #    }
     
     T<-length(data); K<-T-L+1
     

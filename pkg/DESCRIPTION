@@ -3,7 +3,7 @@ Version: 0.5
 Date: 2010-4-11
 Title: Singular Spectrum Analysis
 Author: Jan de Leeuw <deleeuw@stat.ucla.edu>, Patrick Crutcher <pcrutcher@stat.ucla.edu>
-Maintainer: Patrick Crutcher <pcrutcher@stat.ucla.edu>,
+Maintainer: Patrick Crutcher <pcrutcher@stat.ucla.edu>
 Depends: methods, R (>= 2.8.0), sapa (>= 1.0-2)
 Suggests: 
 Description: R functions for singular spectrum analysis
